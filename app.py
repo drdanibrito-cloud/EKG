@@ -190,41 +190,9 @@ if seccion.startswith("1"):
         "va a sufrir una muerte súbita cardiaca."
     )
 
-    fig = go.Figure()
-    years = [x[0] for x in TIMELINE]
-    labels = [x[1] for x in TIMELINE]
-
-    fig.add_trace(
-        go.Scatter(
-            x=years,
-            y=[1] * len(years),
-            mode="markers",
-            marker=dict(size=16, color="#c0392b"),
-            hovertext=[x[2] for x in TIMELINE],
-            hoverinfo="text",
-            showlegend=False,
-        )
-    )
-    # Etiquetas alternadas arriba/abajo para que no se encimen cuando dos
-    # eventos caen cerca en el eje de años (ej. 1895/1903, 2020/2026).
-    for i, (yr, lab) in enumerate(zip(years, labels)):
-        arriba = i % 2 == 0
-        fig.add_annotation(
-            x=yr,
-            y=1,
-            text=lab,
-            showarrow=True,
-            arrowhead=0,
-            arrowcolor="#c0392b",
-            ax=0,
-            ay=-55 if arriba else 55,
-            font=dict(size=11, color="#2c3e50"),
-            align="center",
-        )
-    fig.update_yaxes(visible=False, range=[0.3, 1.7])
-    fig.update_xaxes(title="Año")
-    fig.update_layout(height=380, showlegend=False, margin=dict(t=40, b=20))
-    st.plotly_chart(fig, use_container_width=True)
+    st.markdown("#### Línea de tiempo")
+    timeline_df = pd.DataFrame(TIMELINE, columns=["Año", "Evento", "Por qué importa"])
+    st.dataframe(timeline_df, use_container_width=True, hide_index=True)
 
     col1, col2 = st.columns(2)
     with col1:
